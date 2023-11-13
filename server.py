@@ -1,15 +1,39 @@
 import socket
 import threading
-import random
+from getpass import getpass
 
 def handle_client(client_socket):
     while True:
         data = client_socket.recv(1024)
         if not data:
             break
-        opciones = ["piedras", "papel", "tijeres"]
-        jugada_server = random.choice(opciones)
-
+        jugada_servidor = getpass(f"Eleji una opcion:\n1.Piedra \n2.Papel \n3.Tijeras")
+        jugada_cliente = data.decode('utf-8')
+        if jugada_servidor == jugada_cliente:
+            print(f"¡Empate!\n")
+            responder = "¡Empate!\n"
+        elif  jugada_cliente == "2":
+            if jugada_servidor == "1":
+                print("¡Perdiste!\n")
+                responder = "¡Ganaste!\n"
+            else:
+                print("¡Ganaste\n!")
+                responder = "¡Perdiste!\n"
+        elif jugada_cliente == "3":
+            if jugada_servidor == "2":
+                print("¡Perdiste!\n")
+                responder = "¡Ganaste!\n"
+            else:
+                print("¡Ganaste!\n")
+                responder = "¡Perdiste!\n"
+        elif jugada_cliente == "1":
+            if jugada_servidor == "3":
+                print("¡Perdiste!\n")
+                responder = "¡Ganaste\n!"
+            else:
+                print("¡Ganaste!\n")
+                responder = "¡Perdiste!\n"
+        client_socket.sendall(responder.encode('utf-8'))
 def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     host = '127.0.0.2'
