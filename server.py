@@ -9,6 +9,10 @@ def handle_client(client_socket):
             break
         jugada_servidor = getpass(f"Eleji una opcion:\n1.Piedra \n2.Papel \n3.Tijeras")
         jugada_cliente = data.decode('utf-8')
+        while jugada_servidor > "3" or jugada_servidor < "1":
+            print("Opcion incorrecta, vuelva a elejir otra opción\n")
+            jugada_servidor = getpass(f"Eleji una opcion:\n1.Piedra \n2.Papel \n3.Tijeras")
+        
         if jugada_servidor == jugada_cliente:
             print(f"¡Empate!\n")
             responder = "¡Empate!\n"
@@ -17,7 +21,7 @@ def handle_client(client_socket):
                 print("¡Perdiste!\n")
                 responder = "¡Ganaste!\n"
             else:
-                print("¡Ganaste\n!")
+                print("¡Ganaste!\n")
                 responder = "¡Perdiste!\n"
         elif jugada_cliente == "3":
             if jugada_servidor == "2":
@@ -29,10 +33,11 @@ def handle_client(client_socket):
         elif jugada_cliente == "1":
             if jugada_servidor == "3":
                 print("¡Perdiste!\n")
-                responder = "¡Ganaste\n!"
+                responder = "¡Ganaste!\n"
             else:
                 print("¡Ganaste!\n")
                 responder = "¡Perdiste!\n"
+                
         client_socket.sendall(responder.encode('utf-8'))
 def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
